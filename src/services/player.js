@@ -99,14 +99,17 @@ async function getSoldPlayers(){
     })
 }
 
-async function getPlayers(id){
+async function getPlayers(params){
+    console.log("params== ",params)
     return new Promise(async (resolve, reject) => {
         try {
             let players =[];
-            if(id){
+            if(params.id){
                 players = await models.players.findAll({where :{team_id : id}});
             }else{
                 players = await models.players.findAll({ 
+                    limit : Number(params.limit),
+                    offset : Number(params.offset)
                 });
             }
 

@@ -99,15 +99,15 @@ router.post('/player_image_upload', imageUpload.single('image'), (req, res) => {
 
 
 router.get('/players', (req, res) => {
-    console.log("req==", req.body)
-    playerService.getPlayers()
+    console.log("req==", req.query)
+    playerService.getPlayers(req.query)
     .then((result) => res.status(200).json(result))
     .catch((err) => res.status(500).json(err))
 });
 
 router.get('/players/:id', (req, res) => {
     console.log(req.params)
-    playerService.getPlayers(req.params.id)
+    playerService.getPlayers(req.params)
     .then((result) => res.status(200).json(result))
     .catch((err) => res.status(500).json(err))
 });
