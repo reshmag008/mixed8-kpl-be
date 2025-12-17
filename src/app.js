@@ -13,7 +13,7 @@ const app = express();
    CORS (SINGLE SOURCE)
    ======================= */
 const ALLOWED_ORIGINS =
-  "https://n05-sports.vercel.app,http://localhost:3000";
+  "https://gpt-premier-league-204746249106.europe-west1.run.app,http://localhost:3000";
 
 const allowedOrigins = ALLOWED_ORIGINS.split(",");
 
