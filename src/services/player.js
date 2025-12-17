@@ -5,15 +5,25 @@ const AWS = require('aws-sdk');
 const teamService = require('./teams');
 const s3Service = require('./s3Service');
 // const {io} = require('../app');
+const {roomId} = require('../config/constants')
 
 
 async function displayPlayer(player){
     return new Promise(async (resolve, reject) => {
         try {
-            console.log("fdfsdf----socket--Connect----sdfsdfsdf----")
-            if(global && global.socket){
-                global.socket.emit('current_player', JSON.stringify(player))
+            console.log("Emitting current_player to room:", roomId);
+
+            if (global?.io) {
+                global.io.to(roomId).emit("current_player",  JSON.stringify(player));
             }
+
+            if(player.id){
+                let selectedPlayer = await models.players.findOne({where : {id : player.id}});
+                selectedPlayer.set({"profile_link" : "1"});
+                await selectedPlayer.save();
+            }
+
+
             resolve('success')
         }catch(e){
             console.log("error occured in displayPlayer= ", e);
@@ -25,7 +35,7 @@ async function displayPlayer(player){
 async function teamCall(teamCallData){
     return new Promise(async (resolve, reject) => {
         try {
-            global.socket.emit('team_call', JSON.stringify(teamCallData))
+            global.io.to(roomId).emit('team_call', JSON.stringify(teamCallData))
             resolve('success')
         }catch(e){
             console.log("error occured in displayPlayer= ", e);
@@ -37,7 +47,7 @@ async function teamCall(teamCallData){
 async function teamComplete(teamData){
     return new Promise(async (resolve, reject) => {
         try {
-            global.socket.emit('team_complete', JSON.stringify(teamData))
+            global.io.to(roomId).emit('team_complete', JSON.stringify(teamData))
             resolve('success')
         }catch(e){
             console.log("error occured in displayPlayer= ", e);
@@ -49,7 +59,7 @@ async function teamComplete(teamData){
 async function closePopup(){
     return new Promise(async (resolve, reject) => {
         try {
-            global.socket.emit('close_popup')
+            global.io.to(roomId).emit('close_popup')
             resolve('success')
         }catch(e){
             console.log("error occured in displayPlayer= ", e);
@@ -231,7 +241,7 @@ async function updatePlayers(player){
                 }
                 updateTeam = await teamService.updateTeam(updateTeamParam)
             }
-            global.socket.emit('player_sold', JSON.stringify(player))
+            global.io.to(roomId).emit('player_sold', JSON.stringify(player))
             resolve(updateTeam)
         }catch(e){
             console.log("error occured in addPlayers= ", e);

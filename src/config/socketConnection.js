@@ -11,7 +11,7 @@ const socketConnection = async () => {
     return new Promise(async (resolve, reject) => {
         try {
             io.on('connection', (socket) => {
-                console.log('New connection')
+                console.log('New connection in socket connection js')
                 socket.on('current_player', (player)=>{
                     console.log("on current_player == ")
                     socket.emit('update_current_player', player);

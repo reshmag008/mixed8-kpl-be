@@ -5,6 +5,8 @@ var express = require('express');
 const routes = require('./routes');
 const bodyParser = require('body-parser');
 var app = express();
+const models = require('./models');
+
 
 require('./config/db_connection');
 
@@ -67,11 +69,43 @@ const io = socketio(server,{
       origin: allowedOrigins
   }
 })
+// let roomId = 'auctionLive'
+// io.on('connection', (socket) => {
+//   console.log('New connection in app js')
+//   global.socket = socket;
 
-io.on('connection', (socket) => {
-  console.log('New connection')
-  global.socket = socket;
-})
+//   console.log('Connected:', socket.id);
+
+//   socket.join(roomId);
+//   console.log(`${socket.id} joined room ${roomId}`);
+
+//   // socket.on('join-room', () => {
+//   //   socket.join(roomId);
+//   //   console.log(`${socket.id} joined room ${roomId}`);
+//   // });
+
+
+// })
+global.io = io;
+io.on("connection", async (socket) => {
+  console.log("Connected:", socket.id);
+
+  socket.on("join-room", async (roomId) => {
+    socket.join(roomId);
+    console.log(`${socket.id} joined room ${roomId}`);
+
+    let selectedPlayer = await models.players.findOne({
+  where: { profile_link: "1" },
+  order: [['updatedAt', 'DESC']]
+});
+
+    global.io.to(roomId).emit('current_player', JSON.stringify(selectedPlayer));
+
+  });
+
+  
+});
+
 
 
 module.exports = { app,server,io};
