@@ -72,12 +72,12 @@ io.on("connection", (socket) => {
   socket.on("join-room", async (roomId) => {
     socket.join(roomId);
 
-    const selectedPlayer = await models.players.findOne({
-      where: { profile_link: "1" },
-      order: [["updatedAt", "DESC"]],
-    });
+    // const selectedPlayer = await models.players.findOne({
+    //   where: { profile_link: "1" },
+    //   order: [["updatedAt", "DESC"]],
+    // });
 
-    io.to(roomId).emit("current_player", JSON.stringify(selectedPlayer));
+    // io.to(roomId).emit("current_player", JSON.stringify(selectedPlayer));
   });
 });
 
