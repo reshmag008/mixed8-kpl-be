@@ -2,7 +2,7 @@ const { Storage } = require("@google-cloud/storage");
 const path = require("path");
 const fs = require("fs");
 
-const serviceAccount = JSON.parse(process.env.GCP_SERVICE_ACCOUNT_KEY_JSON);
+const serviceAccount = process.env.GCP_SERVICE_ACCOUNT_KEY_JSON ? JSON.parse(process.env.GCP_SERVICE_ACCOUNT_KEY_JSON) : {};
 
 // const storage = new Storage({
 //   keyFilename: path.resolve(__dirname, "../keys/gcp-service.json"),
