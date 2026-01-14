@@ -14,7 +14,7 @@ const app = express();
    CORS (SINGLE SOURCE)
    ======================= */
 const ALLOWED_ORIGINS =
-  "https://mixed8-kpl-fe-204746249106.europe-west1.run.app,http://localhost:3000";
+  "https://mixed8-kpl-fe-751029010212.europe-west1.run.app,https://mixed8-kpl-fe-204746249106.europe-west1.run.app,http://localhost:3000";
 
 const allowedOrigins = ALLOWED_ORIGINS.split(",");
 
